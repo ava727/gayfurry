@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mreow</title>
+    <title>mreoww</title>
     <style>
         body {
             margin: 0;
@@ -42,28 +42,6 @@
             text-align: center;
             margin-bottom: 20px;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .tetris-button {
-            position: absolute;
-            left: -150px;
-            padding: 10px 20px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s ease-out;
-        }
-
-        .tetris-button:hover {
-            background-color: #175fd5;
-            transform: scale(1.02);
         }
 
         img {
@@ -98,38 +76,6 @@
             font-size: 18px;
             font-weight: bold;
         }
-
-        #tetris-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #tetris-canvas {
-            border: 2px solid #333;
-            background-color: #000;
-        }
-
-        #back-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 8px 16px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            font-size: 14px;
-            cursor: pointer;
-            transition: transform 0.3s ease-out;
-        }
-
-        #back-button:hover {
-            background-color: #175fd5;
-            transform: scale(1.02);
-        }
     </style>
 </head>
 <body>
@@ -140,167 +86,136 @@
         follow <a href="https://x.com/Fred_Spongebob" target="_blank" rel="noopener noreferrer">my twitter</a> or i WILL eat you
     </div>
     <div class="image-container">
-        <button class="tetris-button" id="playTetris">play tetris</button>
         <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
     </div>
     <button id="amuseButton">ungay furry femboy yourself</button>
     <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
-    <div id="tetris-container">
-        <button id="back-button">go back</button>
-        <canvas id="tetris-canvas" width="300" height="600"></canvas>
-    </div>
-
     <script>
-        // Existing JavaScript code for button movement
+        let mouseX = 0, mouseY = 0;
+        let buttonX = 0, buttonY = 0;
+        let buttonWidth = 0, buttonHeight = 0;
+        let targetX = 0, targetY = 0;
+        const sensitivity = 200;
+        const edgeBuffer = 20;
+        const moveSpeed = 0.1;
+        const maxAttempts = 100;
 
-        // Tetris Game Implementation
-        const tetrisContainer = document.getElementById('tetris-container');
-        const playTetrisButton = document.getElementById('playTetris');
-        const backButton = document.getElementById('back-button');
-        const canvas = document.getElementById('tetris-canvas');
-        const context = canvas.getContext('2d');
-
-        const grid = 30;
-        let tetromino = null;
-        let board = [];
-        let score = 0;
-        let gameActive = false;
-
-        function initTetris() {
-            for (let y = 0; y < 20; y++) {
-                board[y] = [];
-                for (let x = 0; x < 10; x++) {
-                    board[y][x] = 0;
-                }
-            }
-            spawnTetromino();
-            gameActive = true;
-            tetrisLoop();
-        }
-
-        function spawnTetromino() {
-            const shapes = [
-                [[1, 1, 1, 1]], // I
-                [[1, 1], [1, 1]], // O
-                [[0, 1, 0], [1, 1, 1]] // T
-            ];
-            tetromino = {
-                shape: shapes[Math.floor(Math.random() * shapes.length)],
-                x: 4,
-                y: 0
-            };
-        }
-
-        function drawTetromino() {
-            context.fillStyle = 'red';
-            for (let y = 0; y < tetromino.shape.length; y++) {
-                for (let x = 0; x < tetromino.shape[y].length; x++) {
-                    if (tetromino.shape[y][x]) {
-                        context.fillRect(
-                            (tetromino.x + x) * grid,
-                            (tetromino.y + y) * grid,
-                            grid, grid
-                        );
-                    }
-                }
-            }
-        }
-
-        function drawBoard() {
-            context.fillStyle = 'black';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            for (let y = 0; y < board.length; y++) {
-                for (let x = 0; x < board[y].length; x++) {
-                    if (board[y][x]) {
-                        context.fillStyle = 'blue';
-                        context.fillRect(x * grid, y * grid, grid, grid);
-                    }
-                }
-            }
-            drawTetromino();
-        }
-
-        function tetrisLoop() {
-            if (!gameActive) return;
-            context.fillStyle = 'black';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            drawBoard();
-            tetromino.y++;
-            if (collision()) {
-                lockTetromino();
-                spawnTetromino();
-                checkLines();
-            }
-            requestAnimationFrame(tetrisLoop);
-        }
-
-        function collision() {
-            for (let y = 0; y < tetromino.shape.length; y++) {
-                for (let x = 0; x < tetromino.shape[y].length; x++) {
-                    if (tetromino.shape[y][x]) {
-                        const newX = tetromino.x + x;
-                        const newY = tetromino.y + y;
-                        if (newX < 0 || newX >= 10 || newY >= 20) {
-                            return true;
-                        }
-                        if (board[newY]?.[newX]) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        function lockTetromino() {
-            for (let y = 0; y < tetromino.shape.length; y++) {
-                for (let x = 0; x < tetromino.shape[y].length; x++) {
-                    if (tetromino.shape[y][x]) {
-                        board[tetromino.y + y][tetromino.x + x] = 1;
-                    }
-                }
-            }
-        }
-
-        function checkLines() {
-            for (let y = 19; y >= 0; y--) {
-                if (board[y].every(cell => cell === 1)) {
-                    board.splice(y, 1);
-                    board.unshift(new Array(10).fill(0));
-                    score++;
-                }
-            }
-        }
-
-        function handleKeyDown(e) {
-            if (!gameActive) return;
-            if (e.key === 'ArrowLeft') {
-                tetromino.x--;
-                if (collision()) tetromino.x++;
-            } else if (e.key === 'ArrowRight') {
-                tetromino.x++;
-                if (collision()) tetromino.x--;
-            } else if (e.key === 'ArrowDown') {
-                tetromino.y++;
-                if (collision()) tetromino.y--;
-            } else if (e.key === 'ArrowUp') {
-                // Rotation implementation would go here
-            }
-        }
-
-        document.addEventListener('keydown', handleKeyDown);
-
-        playTetrisButton.addEventListener('click', () => {
-            tetrisContainer.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            initTetris();
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        backButton.addEventListener('click', () => {
-            tetrisContainer.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            gameActive = false;
+        // Get elements to avoid
+        const elementsToAvoid = [
+            document.querySelector('.top-image'),
+            document.querySelector('.top-text'),
+            document.querySelector('#mainImage'),
+            document.querySelector('.static-text')
+        ];
+
+        function isPositionValid(x, y) {
+            for (const element of elementsToAvoid) {
+                const rect = element.getBoundingClientRect();
+                const buttonRect = {
+                    left: x,
+                    right: x + buttonWidth,
+                    top: y,
+                    bottom: y + buttonHeight
+                };
+                
+                if (
+                    buttonRect.left < rect.right &&
+                    buttonRect.right > rect.left &&
+                    buttonRect.top < rect.bottom &&
+                    buttonRect.bottom > rect.top
+                ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function getRandomPosition() {
+            let attempts = 0;
+            let validPosition = false;
+            let newPos = { x: 0, y: 0 };
+
+            while (!validPosition && attempts < maxAttempts) {
+                const windowWidth = window.innerWidth - buttonWidth - edgeBuffer * 2;
+                const windowHeight = window.innerHeight - buttonHeight - edgeBuffer * 2;
+                
+                newPos = {
+                    x: Math.random() * windowWidth + edgeBuffer,
+                    y: Math.random() * windowHeight + edgeBuffer
+                };
+
+                validPosition = isPositionValid(newPos.x, newPos.y);
+                attempts++;
+            }
+
+            return newPos;
+        }
+
+        function initButton() {
+            const button = document.getElementById('amuseButton');
+            const image = document.getElementById('mainImage');
+            const { width, height } = button.getBoundingClientRect();
+            buttonWidth = width;
+            buttonHeight = height;
+
+            const imageRect = image.getBoundingClientRect();
+            
+            const startX = imageRect.left + (imageRect.width / 2) - (buttonWidth / 2);
+            const startY = imageRect.bottom + 20;
+
+            button.style.left = `${startX}px`;
+            button.style.top = `${startY}px`;
+            
+            targetX = startX;
+            targetY = startY;
+
+            // Check initial position validity
+            if (!isPositionValid(startX, startY)) {
+                const newPos = getRandomPosition();
+                button.style.left = `${newPos.x}px`;
+                button.style.top = `${newPos.y}px`;
+                targetX = newPos.x;
+                targetY = newPos.y;
+            }
+        }
+
+        initButton();
+
+        function animate() {
+            const button = document.getElementById('amuseButton');
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance < sensitivity) {
+                const newPos = getRandomPosition();
+                targetX = newPos.x;
+                targetY = newPos.y;
+            }
+
+            buttonX += (targetX - buttonX) * moveSpeed;
+            buttonY += (targetY - buttonY) * moveSpeed;
+
+            button.style.left = `${buttonX}px`;
+            button.style.top = `${buttonY}px`;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        document.getElementById('amuseButton').addEventListener('click', () => {
+            window.location.href = "https://x.com/veryhappyrn";
         });
     </script>
 </body>

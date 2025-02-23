@@ -14,19 +14,22 @@
             overflow: hidden;
             background-color: #f8f8f8;
             flex-direction: column;
-            position: relative;  /* Added for absolute positioning reference */
+            position: relative;
         }
 
-        .left-image {
+        .left-images-container {
             position: absolute;
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;  /* Space between the two images */
         }
 
-        .left-image img {
-            max-width: 200px;  /* Adjust this value as needed */
+        .left-images-container img {
+            max-width: 200px;
             height: auto;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
@@ -95,7 +98,8 @@
     </style>
 </head>
 <body>
-    <div class="left-image">
+    <div class="left-images-container">
+        <img src="her.png" alt="Her Image">
         <img src="silly.png" alt="Silly Image">
     </div>
     <div class="top-image">
@@ -127,7 +131,7 @@
 
         // Get elements to avoid
         const elementsToAvoid = [
-            document.querySelector('.left-image'),  // Added new element to avoid
+            document.querySelector('.left-images-container'),
             document.querySelector('.top-image'),
             document.querySelector('.top-text'),
             document.querySelector('#mainImage'),

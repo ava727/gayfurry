@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Head section remains the same until the image-container style -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mreoww</title>
     <style>
-        /* Previous styles remain the same */
         body {
             margin: 0;
             display: flex;
@@ -27,7 +25,7 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 20px;  /* Space between the two images */
         }
 
         .left-images-container img {
@@ -59,15 +57,9 @@
             text-decoration: none;
         }
 
-        .center-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
         .image-container {
             text-align: center;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -79,6 +71,7 @@
         }
 
         button {
+            position: absolute;
             padding: 12px 24px;
             background-color: #1a73e8;
             color: white;
@@ -95,10 +88,6 @@
             transform: scale(1.02);
         }
 
-        #amuseButton {
-            position: absolute;
-        }
-
         .static-text {
             margin-top: 40px;
             text-align: center;
@@ -110,8 +99,8 @@
 </head>
 <body>
     <div class="left-images-container">
-        <img src="../her.png" alt="Her Image">
-        <img src="../silly.png" alt="Silly Image">
+        <img src="her.png" alt="Her Image">
+        <img src="silly.png" alt="Silly Image">
     </div>
     <div class="top-image">
         <img src="1341499622723420171.png" alt="Top Image">
@@ -119,16 +108,12 @@
     <div class="top-text">
         follow <a href="https://x.com/Fred_Spongebob" target="_blank" rel="noopener noreferrer">my twitter</a> or i WILL eat you
     </div>
-    <div class="center-content">
-        <button onclick="window.location.href='/community'">Community Added</button>
-        <div class="image-container">
-            <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
-        </div>
+    <div class="image-container">
+        <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
     </div>
     <button id="amuseButton">ungay furry femboy yourself</button>
     <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
-    <!-- Script section remains exactly the same as before -->
     <script>
         let mouseX = 0, mouseY = 0;
         let buttonX = 0, buttonY = 0;
@@ -144,6 +129,7 @@
             mouseY = e.clientY;
         });
 
+        // Get elements to avoid
         const elementsToAvoid = [
             document.querySelector('.left-images-container'),
             document.querySelector('.top-image'),
@@ -213,6 +199,7 @@
             targetX = startX;
             targetY = startY;
 
+            // Check initial position validity
             if (!isPositionValid(startX, startY)) {
                 const newPos = getRandomPosition();
                 button.style.left = `${newPos.x}px`;

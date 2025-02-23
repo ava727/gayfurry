@@ -13,11 +13,13 @@
             min-height: 100vh;
             overflow: hidden;
             background-color: #f8f8f8;
+            flex-direction: column;
         }
 
         .image-container {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         img {
@@ -44,37 +46,62 @@
             background-color: #175fd5;
             transform: scale(1.02);
         }
+
+        .static-text {
+            margin-top: 30px;
+            text-align: center;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <img src="wamz.jpg" alt="Wamz Picture">
+        <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
     </div>
     <button id="amuseButton">ungay furry femboy yourself</button>
+    <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
     <script>
         let mouseX = 0, mouseY = 0;
         let buttonX = 0, buttonY = 0;
         let buttonWidth = 0, buttonHeight = 0;
-        let velocityX = 0, velocityY = 0;
-        const sensitivity = 200; // Increased sensitivity range
-        const maxSpeed = 15;
-        const edgeBuffer = 50; // Minimum distance from edges
+        const sensitivity = 200;
+        const edgeBuffer = 20;
 
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
+        function getRandomPosition() {
+            const windowWidth = window.innerWidth - buttonWidth - edgeBuffer * 2;
+            const windowHeight = window.innerHeight - buttonHeight - edgeBuffer * 2;
+            
+            return {
+                x: Math.random() * windowWidth + edgeBuffer,
+                y: Math.random() * windowHeight + edgeBuffer
+            };
+        }
+
         function initButton() {
             const button = document.getElementById('amuseButton');
+            const image = document.getElementById('mainImage');
             const { width, height } = button.getBoundingClientRect();
             buttonWidth = width;
             buttonHeight = height;
 
-            // Start in random position away from edges
-            button.style.left = `${Math.random() * (window.innerWidth - buttonWidth - edgeBuffer * 2) + edgeBuffer}px`;
-            button.style.top = `${Math.random() * (window.innerHeight - buttonHeight - edgeBuffer * 2) + edgeBuffer}px`;
+            // Get image position
+            const imageRect = image.getBoundingClientRect();
+            
+            // Calculate starting position below image
+            const startX = imageRect.left + (imageRect.width / 2) - (buttonWidth / 2);
+            const startY = imageRect.bottom + 20; // 20px below image
+
+            // Set initial position
+            button.style.left = `${startX}px`;
+            button.style.top = `${startY}px`;
         }
 
         initButton();
@@ -85,37 +112,16 @@
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
 
-            // Mouse avoidance
+            // Check mouse distance
             const dx = mouseX - centerX;
             const dy = mouseY - centerY;
             const distance = Math.hypot(dx, dy);
 
             if (distance < sensitivity) {
-                const angle = Math.atan2(dy, dx) + Math.PI; // Move away from mouse
-                velocityX += maxSpeed * Math.cos(angle);
-                velocityY += maxSpeed * Math.sin(angle);
+                const newPos = getRandomPosition();
+                button.style.left = `${newPos.x}px`;
+                button.style.top = `${newPos.y}px`;
             }
-
-            // Edge avoidance
-            if (buttonX < edgeBuffer) velocityX += maxSpeed * 0.5;
-            if (buttonX > window.innerWidth - buttonWidth - edgeBuffer) velocityX -= maxSpeed * 0.5;
-            if (buttonY < edgeBuffer) velocityY += maxSpeed * 0.5;
-            if (buttonY > window.innerHeight - buttonHeight - edgeBuffer) velocityY -= maxSpeed * 0.5;
-
-            // Apply velocity with damping
-            velocityX *= 0.9;
-            velocityY *= 0.9;
-
-            // Update position
-            buttonX += velocityX;
-            buttonY += velocityY;
-
-            // Keep within screen bounds
-            buttonX = Math.max(edgeBuffer, Math.min(window.innerWidth - buttonWidth - edgeBuffer, buttonX));
-            buttonY = Math.max(edgeBuffer, Math.min(window.innerHeight - buttonHeight - edgeBuffer, buttonY));
-
-            button.style.left = `${buttonX}px`;
-            button.style.top = `${buttonY}px`;
 
             requestAnimationFrame(animate);
         }

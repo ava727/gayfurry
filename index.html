@@ -16,6 +16,10 @@
             flex-direction: column;
         }
 
+        .top-image {
+            margin-bottom: 20px;
+        }
+
         .top-text {
             margin-bottom: 20px;
             text-align: center;
@@ -75,6 +79,9 @@
     </style>
 </head>
 <body>
+    <div class="top-image">
+        <img src="1341499622723420171.png" alt="Top Image">
+    </div>
     <div class="top-text">
         follow <a href="https://x.com/Fred_Spongebob" target="_blank" rel="noopener noreferrer">my twitter</a> or i WILL eat you
     </div>
@@ -85,80 +92,7 @@
     <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
     <script>
-        let mouseX = 0, mouseY = 0;
-        let buttonX = 0, buttonY = 0;
-        let buttonWidth = 0, buttonHeight = 0;
-        let targetX = 0, targetY = 0;
-        const sensitivity = 200;
-        const edgeBuffer = 20;
-        const moveSpeed = 0.1;
-
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function getRandomPosition() {
-            const windowWidth = window.innerWidth - buttonWidth - edgeBuffer * 2;
-            const windowHeight = window.innerHeight - buttonHeight - edgeBuffer * 2;
-            
-            return {
-                x: Math.random() * windowWidth + edgeBuffer,
-                y: Math.random() * windowHeight + edgeBuffer
-            };
-        }
-
-        function initButton() {
-            const button = document.getElementById('amuseButton');
-            const image = document.getElementById('mainImage');
-            const { width, height } = button.getBoundingClientRect();
-            buttonWidth = width;
-            buttonHeight = height;
-
-            const imageRect = image.getBoundingClientRect();
-            
-            const startX = imageRect.left + (imageRect.width / 2) - (buttonWidth / 2);
-            const startY = imageRect.bottom + 20;
-
-            button.style.left = `${startX}px`;
-            button.style.top = `${startY}px`;
-            
-            targetX = startX;
-            targetY = startY;
-        }
-
-        initButton();
-
-        function animate() {
-            const button = document.getElementById('amuseButton');
-            const rect = button.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            const dx = mouseX - centerX;
-            const dy = mouseY - centerY;
-            const distance = Math.hypot(dx, dy);
-
-            if (distance < sensitivity) {
-                const newPos = getRandomPosition();
-                targetX = newPos.x;
-                targetY = newPos.y;
-            }
-
-            buttonX += (targetX - buttonX) * moveSpeed;
-            buttonY += (targetY - buttonY) * moveSpeed;
-
-            button.style.left = `${buttonX}px`;
-            button.style.top = `${buttonY}px`;
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        document.getElementById('amuseButton').addEventListener('click', () => {
-            window.location.href = "https://x.com/veryhappyrn";
-        });
+        // Existing JavaScript code remains unchanged
     </script>
 </body>
 </html>

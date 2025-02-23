@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mreoww</title>
     <style>
+        /* Previous styles remain the same */
         body {
             margin: 0;
             display: flex;
@@ -25,7 +26,7 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;  /* Space between the two images */
+            gap: 20px;
         }
 
         .left-images-container img {
@@ -63,6 +64,13 @@
             position: relative;
         }
 
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         img {
             max-width: 80%;
             height: auto;
@@ -71,7 +79,6 @@
         }
 
         button {
-            position: absolute;
             padding: 12px 24px;
             background-color: #1a73e8;
             color: white;
@@ -95,6 +102,10 @@
             font-size: 18px;
             font-weight: bold;
         }
+
+        #amuseButton {
+            position: absolute;
+        }
     </style>
 </head>
 <body>
@@ -111,10 +122,14 @@
     <div class="image-container">
         <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
     </div>
-    <button id="amuseButton">ungay furry femboy yourself</button>
+    <div class="button-container">
+        <button onclick="window.location.href='/community'">Community Added</button>
+        <button id="amuseButton">ungay furry femboy yourself</button>
+    </div>
     <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
     <script>
+        // Previous script remains the same
         let mouseX = 0, mouseY = 0;
         let buttonX = 0, buttonY = 0;
         let buttonWidth = 0, buttonHeight = 0;
@@ -129,7 +144,6 @@
             mouseY = e.clientY;
         });
 
-        // Get elements to avoid
         const elementsToAvoid = [
             document.querySelector('.left-images-container'),
             document.querySelector('.top-image'),
@@ -199,7 +213,6 @@
             targetX = startX;
             targetY = startY;
 
-            // Check initial position validity
             if (!isPositionValid(startX, startY)) {
                 const newPos = getRandomPosition();
                 button.style.left = `${newPos.x}px`;

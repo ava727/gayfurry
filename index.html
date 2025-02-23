@@ -1,76 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mreoww</title>
+    <!-- ... (keep existing head content) ... -->
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            background-color: #f8f8f8;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .left-images-container {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;  /* Space between the two images */
-        }
-
-        .left-images-container img {
-            max-width: 200px;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-
-        .top-image {
-            margin-bottom: 20px;
-        }
-
-        .top-text {
-            margin-bottom: 20px;
-            text-align: center;
-            color: #333;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .top-text a {
-            color: #1a73e8;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .top-text a:hover {
-            text-decoration: none;
-        }
-
-        .image-container {
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        img {
-            max-width: 80%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-
-        button {
+        /* Add new button style */
+        #communityButton {
             position: absolute;
             padding: 12px 24px;
             background-color: #1a73e8;
@@ -81,166 +15,51 @@
             font-size: 16px;
             cursor: pointer;
             transition: transform 0.3s ease-out;
+            z-index: 2;
         }
-
-        button:hover {
-            background-color: #175fd5;
-            transform: scale(1.02);
-        }
-
-        .static-text {
-            margin-top: 40px;
-            text-align: center;
-            color: #333;
-            font-size: 18px;
-            font-weight: bold;
-        }
+        /* ... (keep existing styles) ... */
     </style>
 </head>
 <body>
-    <div class="left-images-container">
-        <img src="her.png" alt="Her Image">
-        <img src="silly.png" alt="Silly Image">
-    </div>
-    <div class="top-image">
-        <img src="1341499622723420171.png" alt="Top Image">
-    </div>
-    <div class="top-text">
-        follow <a href="https://x.com/Fred_Spongebob" target="_blank" rel="noopener noreferrer">my twitter</a> or i WILL eat you
-    </div>
+    <!-- ... (keep existing body content) ... -->
     <div class="image-container">
         <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
     </div>
+    <button id="communityButton">Community Added</button>
     <button id="amuseButton">ungay furry femboy yourself</button>
-    <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
+    <!-- ... (keep rest of body) ... -->
 
     <script>
-        let mouseX = 0, mouseY = 0;
-        let buttonX = 0, buttonY = 0;
-        let buttonWidth = 0, buttonHeight = 0;
-        let targetX = 0, targetY = 0;
-        const sensitivity = 200;
-        const edgeBuffer = 20;
-        const moveSpeed = 0.1;
-        const maxAttempts = 100;
-
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Get elements to avoid
+        // Update elementsToAvoid array
         const elementsToAvoid = [
             document.querySelector('.left-images-container'),
             document.querySelector('.top-image'),
             document.querySelector('.top-text'),
             document.querySelector('#mainImage'),
-            document.querySelector('.static-text')
+            document.querySelector('.static-text'),
+            document.getElementById('communityButton')
         ];
 
-        function isPositionValid(x, y) {
-            for (const element of elementsToAvoid) {
-                const rect = element.getBoundingClientRect();
-                const buttonRect = {
-                    left: x,
-                    right: x + buttonWidth,
-                    top: y,
-                    bottom: y + buttonHeight
-                };
-                
-                if (
-                    buttonRect.left < rect.right &&
-                    buttonRect.right > rect.left &&
-                    buttonRect.top < rect.bottom &&
-                    buttonRect.bottom > rect.top
-                ) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        function getRandomPosition() {
-            let attempts = 0;
-            let validPosition = false;
-            let newPos = { x: 0, y: 0 };
-
-            while (!validPosition && attempts < maxAttempts) {
-                const windowWidth = window.innerWidth - buttonWidth - edgeBuffer * 2;
-                const windowHeight = window.innerHeight - buttonHeight - edgeBuffer * 2;
-                
-                newPos = {
-                    x: Math.random() * windowWidth + edgeBuffer,
-                    y: Math.random() * windowHeight + edgeBuffer
-                };
-
-                validPosition = isPositionValid(newPos.x, newPos.y);
-                attempts++;
-            }
-
-            return newPos;
-        }
-
+        // Update initButton function
         function initButton() {
             const button = document.getElementById('amuseButton');
+            const communityButton = document.getElementById('communityButton');
             const image = document.getElementById('mainImage');
-            const { width, height } = button.getBoundingClientRect();
-            buttonWidth = width;
-            buttonHeight = height;
-
+            
+            // Position community button
             const imageRect = image.getBoundingClientRect();
-            
-            const startX = imageRect.left + (imageRect.width / 2) - (buttonWidth / 2);
-            const startY = imageRect.bottom + 20;
+            const communityRect = communityButton.getBoundingClientRect();
+            communityButton.style.left = `${imageRect.left - communityRect.width - 20}px`;
+            communityButton.style.top = `${imageRect.top + (imageRect.height/2 - communityRect.height/2)}px`;
 
-            button.style.left = `${startX}px`;
-            button.style.top = `${startY}px`;
-            
-            targetX = startX;
-            targetY = startY;
-
-            // Check initial position validity
-            if (!isPositionValid(startX, startY)) {
-                const newPos = getRandomPosition();
-                button.style.left = `${newPos.x}px`;
-                button.style.top = `${newPos.y}px`;
-                targetX = newPos.x;
-                targetY = newPos.y;
-            }
+            // ... (keep existing amuseButton positioning code) ...
         }
 
-        initButton();
-
-        function animate() {
-            const button = document.getElementById('amuseButton');
-            const rect = button.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            const dx = mouseX - centerX;
-            const dy = mouseY - centerY;
-            const distance = Math.hypot(dx, dy);
-
-            if (distance < sensitivity) {
-                const newPos = getRandomPosition();
-                targetX = newPos.x;
-                targetY = newPos.y;
-            }
-
-            buttonX += (targetX - buttonX) * moveSpeed;
-            buttonY += (targetY - buttonY) * moveSpeed;
-
-            button.style.left = `${buttonX}px`;
-            button.style.top = `${buttonY}px`;
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        document.getElementById('amuseButton').addEventListener('click', () => {
-            window.location.href = "https://x.com/veryhappyrn";
+        // Add community button click handler
+        document.getElementById('communityButton').addEventListener('click', () => {
+            window.location.href = "/community.html";
         });
+        // ... (keep rest of script) ...
     </script>
 </body>
 </html>

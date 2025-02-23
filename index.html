@@ -57,8 +57,9 @@
         let buttonX = 0, buttonY = 0;
         let buttonWidth = 0, buttonHeight = 0;
         let velocityX = 0, velocityY = 0;
-        const sensitivity = 50; // Reduced sensitivity
-        const maxSpeed = 15; // Increased speed
+        const sensitivity = 200; // Increased sensitivity range
+        const maxSpeed = 15;
+        const edgeBuffer = 50; // Minimum distance from edges
 
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
@@ -71,8 +72,9 @@
             buttonWidth = width;
             buttonHeight = height;
 
-            button.style.left = `${Math.random() * (window.innerWidth - buttonWidth)}px`;
-            button.style.top = `${Math.random() * (window.innerHeight - buttonHeight)}px`;
+            // Start in random position away from edges
+            button.style.left = `${Math.random() * (window.innerWidth - buttonWidth - edgeBuffer * 2) + edgeBuffer}px`;
+            button.style.top = `${Math.random() * (window.innerHeight - buttonHeight - edgeBuffer * 2) + edgeBuffer}px`;
         }
 
         initButton();
@@ -83,26 +85,34 @@
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
 
+            // Mouse avoidance
             const dx = mouseX - centerX;
             const dy = mouseY - centerY;
             const distance = Math.hypot(dx, dy);
 
             if (distance < sensitivity) {
-                // Generate random movement direction
-                const angle = Math.random() * Math.PI * 2;
-                velocityX = maxSpeed * Math.cos(angle);
-                velocityY = maxSpeed * Math.sin(angle);
-            } else {
-                velocityX *= 0.96;
-                velocityY *= 0.96;
+                const angle = Math.atan2(dy, dx) + Math.PI; // Move away from mouse
+                velocityX += maxSpeed * Math.cos(angle);
+                velocityY += maxSpeed * Math.sin(angle);
             }
 
+            // Edge avoidance
+            if (buttonX < edgeBuffer) velocityX += maxSpeed * 0.5;
+            if (buttonX > window.innerWidth - buttonWidth - edgeBuffer) velocityX -= maxSpeed * 0.5;
+            if (buttonY < edgeBuffer) velocityY += maxSpeed * 0.5;
+            if (buttonY > window.innerHeight - buttonHeight - edgeBuffer) velocityY -= maxSpeed * 0.5;
+
+            // Apply velocity with damping
+            velocityX *= 0.9;
+            velocityY *= 0.9;
+
+            // Update position
             buttonX += velocityX;
             buttonY += velocityY;
 
-            // Keep button within screen boundaries
-            buttonX = Math.max(0, Math.min(window.innerWidth - buttonWidth, buttonX));
-            buttonY = Math.max(0, Math.min(window.innerHeight - buttonHeight, buttonY));
+            // Keep within screen bounds
+            buttonX = Math.max(edgeBuffer, Math.min(window.innerWidth - buttonWidth - edgeBuffer, buttonX));
+            buttonY = Math.max(edgeBuffer, Math.min(window.innerHeight - buttonHeight - edgeBuffer, buttonY));
 
             button.style.left = `${buttonX}px`;
             button.style.top = `${buttonY}px`;

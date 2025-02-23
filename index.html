@@ -48,7 +48,7 @@
         }
 
         .static-text {
-            margin-top: 30px;
+            margin-top: 40px; /* Increased from 30px to 40px */
             text-align: center;
             color: #333;
             font-size: 18px;
@@ -70,7 +70,7 @@
         let targetX = 0, targetY = 0;
         const sensitivity = 200;
         const edgeBuffer = 20;
-        const moveSpeed = 0.1; // Adjust movement smoothness
+        const moveSpeed = 0.1;
 
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
@@ -94,18 +94,14 @@
             buttonWidth = width;
             buttonHeight = height;
 
-            // Get image position
             const imageRect = image.getBoundingClientRect();
             
-            // Calculate starting position below image
             const startX = imageRect.left + (imageRect.width / 2) - (buttonWidth / 2);
-            const startY = imageRect.bottom + 20; // 20px below image
+            const startY = imageRect.bottom + 20;
 
-            // Set initial position
             button.style.left = `${startX}px`;
             button.style.top = `${startY}px`;
             
-            // Set initial target
             targetX = startX;
             targetY = startY;
         }
@@ -118,7 +114,6 @@
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
 
-            // Check mouse distance
             const dx = mouseX - centerX;
             const dy = mouseY - centerY;
             const distance = Math.hypot(dx, dy);
@@ -129,11 +124,9 @@
                 targetY = newPos.y;
             }
 
-            // Smooth movement towards target
             buttonX += (targetX - buttonX) * moveSpeed;
             buttonY += (targetY - buttonY) * moveSpeed;
 
-            // Update button position
             button.style.left = `${buttonX}px`;
             button.style.top = `${buttonY}px`;
 

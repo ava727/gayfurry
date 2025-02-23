@@ -67,8 +67,10 @@
         let mouseX = 0, mouseY = 0;
         let buttonX = 0, buttonY = 0;
         let buttonWidth = 0, buttonHeight = 0;
+        let targetX = 0, targetY = 0;
         const sensitivity = 200;
         const edgeBuffer = 20;
+        const moveSpeed = 0.1; // Adjust movement smoothness
 
         document.addEventListener('mousemove', e => {
             mouseX = e.clientX;
@@ -102,6 +104,10 @@
             // Set initial position
             button.style.left = `${startX}px`;
             button.style.top = `${startY}px`;
+            
+            // Set initial target
+            targetX = startX;
+            targetY = startY;
         }
 
         initButton();
@@ -119,9 +125,17 @@
 
             if (distance < sensitivity) {
                 const newPos = getRandomPosition();
-                button.style.left = `${newPos.x}px`;
-                button.style.top = `${newPos.y}px`;
+                targetX = newPos.x;
+                targetY = newPos.y;
             }
+
+            // Smooth movement towards target
+            buttonX += (targetX - buttonX) * moveSpeed;
+            buttonY += (targetY - buttonY) * moveSpeed;
+
+            // Update button position
+            button.style.left = `${buttonX}px`;
+            button.style.top = `${buttonY}px`;
 
             requestAnimationFrame(animate);
         }

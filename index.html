@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Head section remains the same until the image-container style -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,17 +59,16 @@
             text-decoration: none;
         }
 
-        .image-container {
-            text-align: center;
+        .center-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
             margin-bottom: 20px;
-            position: relative;
         }
 
-        .button-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
+        .image-container {
+            text-align: center;
+            position: relative;
         }
 
         img {
@@ -95,6 +95,10 @@
             transform: scale(1.02);
         }
 
+        #amuseButton {
+            position: absolute;
+        }
+
         .static-text {
             margin-top: 40px;
             text-align: center;
@@ -102,16 +106,12 @@
             font-size: 18px;
             font-weight: bold;
         }
-
-        #amuseButton {
-            position: absolute;
-        }
     </style>
 </head>
 <body>
     <div class="left-images-container">
-        <img src="her.png" alt="Her Image">
-        <img src="silly.png" alt="Silly Image">
+        <img src="../her.png" alt="Her Image">
+        <img src="../silly.png" alt="Silly Image">
     </div>
     <div class="top-image">
         <img src="1341499622723420171.png" alt="Top Image">
@@ -119,17 +119,17 @@
     <div class="top-text">
         follow <a href="https://x.com/Fred_Spongebob" target="_blank" rel="noopener noreferrer">my twitter</a> or i WILL eat you
     </div>
-    <div class="image-container">
-        <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
-    </div>
-    <div class="button-container">
+    <div class="center-content">
         <button onclick="window.location.href='/community'">Community Added</button>
-        <button id="amuseButton">ungay furry femboy yourself</button>
+        <div class="image-container">
+            <img id="mainImage" src="wamz.jpg" alt="Wamz Picture">
+        </div>
     </div>
+    <button id="amuseButton">ungay furry femboy yourself</button>
     <p class="static-text">WAMZ IS A GAY FURRY FEMBOY IN DENIAL!</p>
 
+    <!-- Script section remains exactly the same as before -->
     <script>
-        // Previous script remains the same
         let mouseX = 0, mouseY = 0;
         let buttonX = 0, buttonY = 0;
         let buttonWidth = 0, buttonHeight = 0;

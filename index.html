@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Site</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-color: #f8f8f8;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        button {
+            position: absolute;
+            padding: 12px 24px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease-out;
+        }
+
+        button:hover {
+            background-color: #175fd5;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="wamz.jpg" alt="Wamz Picture">
+    </div>
+    <button id="amuseButton">ungay furry femboy yourself</button>
+
+    <script>
+        let mouseX = 0, mouseY = 0;
+        let buttonX = 0, buttonY = 0;
+        let buttonWidth = 0, buttonHeight = 0;
+        let velocityX = 0, velocityY = 0;
+        const sensitivity = 100;
+        const maxSpeed = 5;
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function initButton() {
+            const button = document.getElementById('amuseButton');
+            const { width, height } = button.getBoundingClientRect();
+            buttonWidth = width;
+            buttonHeight = height;
+
+            button.style.left = `${Math.random() * (window.innerWidth - buttonWidth)}px`;
+            button.style.top = `${Math.random() * (window.innerHeight - buttonHeight)}px`;
+        }
+
+        initButton();
+
+        function animate() {
+            const button = document.getElementById('amuseButton');
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance < sensitivity) {
+                const angle = Math.atan2(dy, dx);
+                velocityX = maxSpeed * Math.cos(angle + Math.PI);
+                velocityY = maxSpeed * Math.sin(angle + Math.PI);
+            } else {
+                velocityX *= 0.96;
+                velocityY *= 0.96;
+            }
+
+            buttonX += velocityX;
+            buttonY += velocityY;
+
+            buttonX = Math.max(0, Math.min(window.innerWidth - buttonWidth, buttonX));
+            buttonY = Math.max(0, Math.min(window.innerHeight - buttonHeight, buttonY));
+
+            button.style.left = `${buttonX}px`;
+            button.style.top = `${buttonY}px`;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        document.getElementById('amuseButton').addEventListener('click', () => {
+            window.location.href = "https://x.com/veryhappyrn";
+        });
+    </script>
+</body>
+</html>
